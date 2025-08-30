@@ -41,26 +41,6 @@ This project implements a user onboarding workflow using Temporal that:
    make client
    ```
 
-## Project Structure
-
-### Types (`types/`)
-- `user.go`: Shared data structures used across the application
-
-### Activities (`activity/`)
-- `email.go`: Email-related activities
-  - `SendWelcomeEmail`: Sends initial welcome email
-  - `SendOnboardingCompleteEmail`: Sends completion email
-
-### Workflows (`workflow/`)
-- `workflow.go`: Main user onboarding workflow
-  - `UserOnboardingWorkflow`: Orchestrates the entire onboarding process
-
-### Worker (`worker/`)
-- `worker.go`: Temporal worker that processes workflows and activities
-
-### Client (`client/`)
-- `main.go`: Client application that starts workflows and sends signals
-
 ## Workflow Flow
 
 1. **Workflow starts** with user data
@@ -76,15 +56,6 @@ This project implements a user onboarding workflow using Temporal that:
 ```bash
 # Run both worker and client
 make run
-
-# Run in development mode
-make dev
-
-# Build all components
-make build
-
-# Clean build artifacts
-make clean
 ```
 
 ## Configuration
@@ -95,19 +66,6 @@ The application uses default Temporal configuration. To customize:
 - **Task Queue**: Modify `user-task-queue` in worker and client
 - **Timeouts**: Adjust activity timeouts in workflow code
 
-## Development
-
-### Adding New Activities
-
-1. Create activity in `activity/` directory
-2. Register in `worker/worker.go`
-3. Call from workflow in `workflow/workflow.go`
-
-### Adding New Workflows
-
-1. Create workflow in `workflow/` directory
-2. Register in `worker/worker.go`
-3. Execute from client in `client/main.go`
 
 ## Troubleshooting
 
@@ -117,11 +75,7 @@ The application uses default Temporal configuration. To customize:
 2. **Signals not received**: Check signal names match between client and workflow
 3. **Activities failing**: Verify activity registration in worker
 
-### Logs
 
-- Worker logs show activity and workflow execution
-- Client logs show workflow start and signal sending
-- Temporal UI shows workflow history and state
 
 ## License
 
