@@ -1,7 +1,7 @@
-package types
+package models
 
 type UserData struct {
-	UserID string
+	ID string
 	Email  string
 }
 
