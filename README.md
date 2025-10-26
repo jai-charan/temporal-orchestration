@@ -1,82 +1,28 @@
-# Temporal Orchestration
+# Temporal Orchestration Example
 
-A Go-based Temporal workflow application that demonstrates durable event-driven orchestration for user onboarding processes.
+This project is a simple demonstration of a user onboarding workflow using Temporal.io and Go.
 
-## Overview
+It shows how to use a Temporal Workflow to coordinate multiple steps, like sending an email and subscribing a user, by waiting for signals from external services.
 
-This project implements a user onboarding workflow using Temporal that:
-- Sends a welcome email to new users
-- Waits for external service confirmations via signals
-- Sends a completion email when onboarding is finished
+---
 
-## Architecture
+## Running the Project
 
-```
-├── types/           # Shared data types
-├── activity/        # Temporal activities (business logic)
-├── workflow/        # Temporal workflows (orchestration)
-├── worker/          # Worker process to execute workflows/activities
-└── client/          # Client to start workflows and send signals
-```
+You'll need two terminals open.
 
-## Prerequisites
+### 1. Run the Temporal Worker
 
-- Go 1.24.2 or higher
-- Temporal server running locally (or cloud instance)
-
-## Quick Start
-
-1. **Start Temporal server** (if running locally):
-   ```bash
-   temporal server start-dev
-   ```
-
-2. **Start the worker** (in one terminal):
-   ```bash
-   make worker
-   ```
-
-3. **Run the client** (in another terminal):
-   ```bash
-   make client
-   ```
-
-## Workflow Flow
-
-1. **Workflow starts** with user data
-2. **SendWelcomeEmail activity** executes
-3. **Wait for external signals**:
-   - `email_sent`: Confirmation from email service
-   - `subscribed`: Confirmation from subscription service
-4. **SendOnboardingCompleteEmail activity** executes
-5. **Workflow completes**
-
-## Available Commands
+First, start the worker. The worker listens to the task queue for work (like running workflows or activities).
 
 ```bash
-# Run both worker and client
-make run
+go run main.go
 ```
 
-## Configuration
+### 2. Run the Starter
 
-The application uses default Temporal configuration. To customize:
+Next, in a second terminal, run the starter. This will execute the workflow, which then waits for signals. The starter also mocks those signals to complete the process.
+Bash
 
-- **Temporal Server**: Set `TEMPORAL_HOST` environment variable
-- **Task Queue**: Modify `user-task-queue` in worker and client
-- **Timeouts**: Adjust activity timeouts in workflow code
-
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Worker not starting**: Ensure Temporal server is running
-2. **Signals not received**: Check signal names match between client and workflow
-3. **Activities failing**: Verify activity registration in worker
-
-
-
-## License
-
-MIT License
+```bash
+go run ./starter/starter.go
+```
